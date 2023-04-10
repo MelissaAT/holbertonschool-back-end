@@ -12,7 +12,9 @@ if __name__ == "__main__":
 
     employee_name = response.json()["name"]
 
-    api_url2 = f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
+    api_url2 = (
+            f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
+    )
     response = requests.get(api_url2)
 
     tasks = response.json()
@@ -25,12 +27,18 @@ if __name__ == "__main__":
 
     n_total_tasks = len(completed_tasks)
 
-    print(f"Employee {employee_name} is done with tasks({n_total_tasks}/{total_tasks}):")
+    print(
+        f"Employee {employee_name} is done with "
+        f"tasks({n_total_tasks}/{total_tasks}):"
+    )
 
     for task in completed_tasks:
         print(f"\t {task['title']}")
 
-    rows = [[employee_id, employee_name, task["completed"], task["title"]] for task in tasks]
+    rows = []
+    for task in tasks:
+        row = employee_id, employee_name, task["completed"], task["title"]
+        rows.append(row)
 
     with open(f"{employee_id}.csv", 'w', newline='') as csv_file:
         writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
