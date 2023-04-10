@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """Documentation"""
+import csv
 import requests
 import sys
-import csv
+
 
 if __name__ == "__main__":
     employee_id = int(sys.argv[1])
