@@ -1,31 +1,32 @@
 #!/usr/bin/python3
-"""Documentation"""
-import requests
-import sys
+"""Python script that, returns information for a given employee ID
+about his/her TODO list progress"""
 
+import requests
+from sys import argv
 
 if __name__ == "__main__":
-    employee_id = int(sys.argv[1])
+    user_id = eval(argv[1])
+    count = 0
+    tasks = requests.get(f'https://jsonplaceholder.typicode.com/todos/')
+    users = requests.get(f'https://jsonplaceholder.typicode.com/users')
+    tasks_dict = tasks.json()
+    users_dict = users.json()
+    tasks_complete = []
 
-    api_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
-    response = requests.get(api_url)
+    # Counting and adding task completed
+    for task in tasks_dict:
+        if task['userId'] == user_id:
+            if task['completed']:
+                count += 1
+                tasks_complete.append(task['title'])
 
-    employee_name = response.json()["name"]
+    # Getting user name
+    for user in users_dict:
+        if user['id'] == user_id:
+            user_name = user['name']
 
-    api_url2 = f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
-    response = requests.get(api_url2)
-
-    tasks = response.json()
-    total_tasks = len(tasks)
-
-    completed_tasks = []
-    for task in tasks:
-        if task["completed"]:
-            completed_tasks.append(task)
-
-    n_total_tasks = len(completed_tasks)
-
-    print(f"Employee {employee_name} is done with tasks({n_total_tasks}/{total_tasks}):")
-
-for task in completed_tasks:
-    print(f"\t {task['title']}")
+    # Returns information about their progress
+    print(f'Employee {user_name} is done with tasks({count}/20):')
+    for i in tasks_complete:
+        print(f'\t {i}')
