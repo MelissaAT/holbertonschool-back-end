@@ -4,7 +4,6 @@ import requests
 import sys
 import csv
 
-
 if __name__ == "__main__":
     employee_id = int(sys.argv[1])
 
@@ -30,7 +29,9 @@ if __name__ == "__main__":
 
     for task in completed_tasks:
         print(f"\t {task['title']}")
-rows = []
-with open(f"{employee_id}.csv" 'w') as csv_file:
-    writer = csv.writer(csv_file, quoting=csv.QUOTE_MINIMAL)
-    writer.writerows(rows)
+
+    rows = [[employee_id, employee_name, task["completed"], task["title"]] for task in tasks]
+
+    with open(f"{employee_id}.csv", 'w', newline='') as csv_file:
+        writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+        writer.writerows(rows)
