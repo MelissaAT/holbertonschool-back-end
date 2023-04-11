@@ -21,7 +21,9 @@ for employee_id in user_ids:
 
     employee_name = response.json()["username"]
 
-    api_url2 = f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
+    api_url2 = (
+        f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
+        )
     response = requests.get(api_url2)
 
     tasks = response.json()
@@ -37,5 +39,3 @@ for employee_id in user_ids:
 
 with open("todo_all_employees.json", 'w') as json_file:
     json.dump(json_dict, json_file)
-
-
